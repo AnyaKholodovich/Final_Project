@@ -20,6 +20,6 @@ function TodoList ({item, onChange, onClick}) {
         )}
       </li>
     );
-}
+};
 
 export default TodoList;
