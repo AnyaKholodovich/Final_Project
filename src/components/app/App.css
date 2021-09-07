@@ -1,0 +1,15 @@
+* {
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+}
+body {
+  background: #DCE8EF;
+  background-size: 100%;
+}
+
+.App {
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+}
+
