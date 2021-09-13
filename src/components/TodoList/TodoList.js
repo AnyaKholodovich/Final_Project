@@ -1,5 +1,5 @@
 import React from 'react';
-import './ToDoList.css'
+import './ToDoList.scss'
 
 function TodoList ({item, onChange, onClick}) {
     return (
