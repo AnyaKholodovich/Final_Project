@@ -14,6 +14,7 @@ import { SignIg, SignUp, Tasks, Users} from '../pages/index';
 
 
 function App() {
+
   return (
     <Router>
       {/* <NotAuthorizeRoute path={Routes.SignInRoute} component ={SignIg} /> */}
