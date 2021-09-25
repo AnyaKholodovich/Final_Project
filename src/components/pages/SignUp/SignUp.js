@@ -1,45 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../SignUp/SignUp.scss';
 
-import { signUpApi } from '../../../api/signUpApi';
+import { authApi } from '../../../api/authApi';
+import { usersApi } from '../../../api/usersApi';
 import { Routes } from '../../../utils/routes';
 
 
 const SignUp = () => {
     const [signUpForm, setSignUpForm] = useState({
-        nicknameValue: '',
+        userNameValue: '',
         loginValue: '',
         passwordValue: '',
         repeatedPasswordValue: '',
-        selectValue: '',
+        selectRoleValue: '',
+        selectAdminValue: ''
       });
      
       const [signUpFormError, setSignUpFormError] = useState({
-        nicknameError: '',
+        userNameError: '',
         loginError: '',
         passwordError: '',
         repeatedPasswordError: '',
-        selectError: ''
+        selectRoleError: '',
+        selectAdminError: ''
       });
     
       const { 
-          nicknameValue, 
+          userNameValue, 
           loginValue, 
           passwordValue, 
           repeatedPasswordValue, 
-          selectValue 
+          selectRoleValue,
+          selectAdminValue
         } = signUpForm;
 
       const { 
-          nicknameError, 
+          userNameError, 
           loginError, 
           passwordError, 
           repeatedPasswordError, 
-          selectError 
+          selectRoleError,
+          selectAdminError
         } = signUpFormError;
     
+
+        const [admins, setAdmins] = useState([])
+
+        useEffect(()=> {
+            getAdminsList()
+        }, [])
+
+        const getAdminsList = () => {
+            usersApi.getAdmins()
+            .then(res => {
+                const adminsList = res.data
+                setAdmins(adminsList)
+
+            })
+        }
+
+        const handleChangeRole = (event, inputName, errorName) => {
+        const { value } = event.target
+        if(value === 'admin') {
+            const signUpFormErrorCopy = {...signUpFormError}
+            signUpFormErrorCopy['selectAdminError'] = ''
+            setSignUpFormError(signUpFormErrorCopy)
+        }
+        handleChangeSignUpForm (event, inputName, errorName)
+        }
+
       const handleChangeSignUpForm = (event, inputName, errorName) => {
     
         const signUpFormCopy = {...signUpForm};
@@ -60,15 +91,84 @@ const SignUp = () => {
         }
         return false;
       }
+
+      const handleCheckValidNickname = async (signUpFormErrorCopy) => {
+        const minLetters = /(?=(?:.*[a-zA-Z]){3,})/;
+            if(!minLetters.test(userNameValue) || !(userNameValue.length >= 5)){
+                signUpFormErrorCopy['userNameError'] = 'notValid';
+        } else {
+            await handleCheckUserExists(signUpFormError, 'userName', userNameValue, 'userNameError')
+        }
+      }	
+
+      const handleCheckUserExists = async (signUpFormErrorCopy, fieldName, fielValue, errorName) => {
+          const body = {}
+          body[fieldName] = fielValue;
+          console.log('handleCheckUserExists', body);
+          return usersApi.ckeckUsersExists(body)
+          .then(res => {
+              const { data } = res
+              if(data.exists) {
+                signUpFormErrorCopy[errorName] = 'alredyExist' 
+              }
+          })
+      }
     
-      const handleCheckPasswordMatch = (signUpFormError) => {
+      const handleCheckValidEmail = async (signUpFormErrorCopy) => {
     
-        if (repeatedPasswordValue !== passwordValue && repeatedPasswordValue !== ''){
-            signUpFormError['repeatedPasswordError'] = 'notMatch'
+        const mailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    
+        if(!mailRegex.test(loginValue) && loginValue !== ''){
+    
+            signUpFormErrorCopy['loginError'] = 'notValid';
+        } else {
+            await handleCheckUserExists(signUpFormErrorCopy, 'login', userNameValue, 'loginError')
         }
       }
     
-      const handleCheckEmptySignUpForm = (
+      const handleCheckValidPassword = (signUpFormErrorCopy) => {
+    
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+    
+        if (!passwordRegex.test(passwordValue) && passwordValue !== ''){
+            signUpFormErrorCopy['passwordError'] = 'notValid'
+        }
+      }
+    
+    
+      const handleCheckPasswordMatch = (signUpFormErrorCopy) => {
+    
+        if (repeatedPasswordValue !== passwordValue && repeatedPasswordValue !== ''){
+            signUpFormErrorCopy['repeatedPasswordError'] = 'notMatch'
+        }
+      }
+
+      const handleCheckValidInput = async (inputName, signUpFormErrorCopy) => {
+          if (inputName !== ''){
+              switch(inputName){
+                case 'userNameValue':
+                    await handleCheckValidNickname(signUpFormErrorCopy);
+                    break
+
+                case 'loginValue':
+                    await handleCheckValidEmail(signUpFormErrorCopy);
+                break
+
+                case 'passwordValue':
+                    handleCheckValidPassword(signUpFormErrorCopy);
+                    break
+
+                case 'repeatedPasswordValue':
+                    handleCheckPasswordMatch(signUpFormErrorCopy);
+                break
+
+                    default:
+                        console.log('Input with this name is not exists');
+              }
+          }
+      }
+    
+      const handleCheckEmptySignUpForm = async (
           event = {}, 
           inputName = '', 
           errorName =''
@@ -77,7 +177,8 @@ const SignUp = () => {
         const signUpFormErrorCopy = {...signUpFormError};
     
         let resultCheckEmpty = false;
-        handleCheckPasswordMatch(signUpFormErrorCopy);
+        
+        await handleCheckValidInput(inputName, signUpFormErrorCopy)
     
         if(inputName !== '' && errorName !== ''){
             resultCheckEmpty = handleCheckInput(
@@ -92,6 +193,12 @@ const SignUp = () => {
 
             const valuesNameForm = Object.keys(signUpFormCopy)
             const errorNameForm = Object.keys(signUpFormErrorCopy)
+
+            if(selectRoleValue === 'admin') {
+                valuesNameForm.pop()
+                errorNameForm.pop()
+            }
+
             const checkEmptyArray = Array(valuesNameForm.length).fill(false)
 
             for (let i = 0; i < valuesNameForm.length; i++){
@@ -104,39 +211,32 @@ const SignUp = () => {
             }
     
             resultCheckEmpty = checkEmptyArray.some(check => check === true)
+
             setSignUpFormError(signUpFormErrorCopy);
-    
         }
+
+        
         return resultCheckEmpty;
       }
     
       const handleSubmitForm = async (event) => {
     
         event.preventDefault();
+        const isFormInValid = await handleCheckEmptySignUpForm()
     
-          if(handleCheckEmptySignUpForm()){
+          if(isFormInValid){
+              console.log('isFormInValid', isFormInValid);
               return;
           }
-          let newUser;
 
-          //Here we send request for create new user
-          //role: 'admin' || 'user'
-          //for admin 
-          //newUser = {
-        //       userName: '...',
-        //       password: '...',
-        //       role: '...'
-        //   }
+          const newUser ={
+            userName: userNameValue,
+            login: loginValue,
+            password: passwordValue,
+            role: selectRoleValue
+          }
 
-        //for user 
-          //newUser = {
-        //       userName: '...',
-        //       password: '...',
-        //       role: '...',
-        // adminId: '...'
-        //   }
-
-        const response = await signUpApi.signUpUser(newUser)
+        const response = await authApi.signUpUser(newUser)
         console.log('response', response);
       }
 
@@ -155,14 +255,14 @@ const SignUp = () => {
                     <input 
                         type='text' 
                         placeholder='Nickname' 
-                        value={nicknameValue}
-                        name='nicknameValue'
-                        onChange={ event => handleChangeSignUpForm(event, 'nicknameValue', 'nicknameError' )}
-                        onBlur={ event => handleCheckEmptySignUpForm(event, 'nicknameValue', 'nicknameError')}
+                        value={userNameValue}
+                        name='userNameValue'
+                        onChange={ event => handleChangeSignUpForm(event, 'userNameValue', 'userNameError' )}
+                        onBlur={ event => handleCheckEmptySignUpForm(event, 'userNameValue', 'userNameError')}
                     />
-                    {nicknameError === 'empty' && <span className='registration-error'>Enter a nickname</span>}
-                    {nicknameError === 'notValid' && <span className='registration-error'>At least 5 symbols and at least 3 letters</span>}
-                    {nicknameError === 'alreadyExist' &&  <span className='registration-error'>This nickname is already registered</span>}
+                    {userNameError === 'empty' && <span className='registration-error'>Enter a nickname</span>}
+                    {userNameError === 'notValid' && <span className='registration-error'>At least 5 symbols and at least 3 letters</span>}
+                    {userNameError === 'alreadyExist' &&  <span className='registration-error'>This nickname is already registered</span>}
                 </div>
 
                 <div className = 'input-block'>
@@ -237,36 +337,50 @@ const SignUp = () => {
 
                     <select 
                         className='registration-value'
-                        name='selectValue'
+                        name='selectRoleValue'
                         id='role-select'
-                        value={selectValue}
-                        onChange={ event => handleChangeSignUpForm(event, 'selectValue', 'selectError' )}
-                        onBlur={event => handleCheckEmptySignUpForm(event, 'selectValue', 'selectError')}>
+                        value={selectRoleValue}
+                        onChange={ (event) => 
+                            handleChangeRole (event, 'selectRoleValue', 'selectRoleError' )
+                        }
+
+                        onBlur={event => handleCheckEmptySignUpForm(event, 'selectRoleValue', 'selectRoleError')}>
 
                             <option value='' selected disabled>Please, choose a role</option>
                             <option value='user'>User</option>
-                            <option value='administrator'>Administrator</option>
+                            <option value='admin'>Administrator</option>
 
                     </select>
-                    {selectError === 'empty' && <span className='registration-error'>Choose a role</span>}
+                    {selectRoleError === 'empty' && (<span className='registration-error'>Choose a role</span>)}
                 </div>
 
-                {selectValue === 'administrator' && (
+                {selectRoleValue === 'user' && (
                     <div className='registration'>
                         <label
                             className='title-signUp'
-                            htmlFor='administrators'>
+                            htmlFor='administrator'>
                             Choose administrator
                         </label>
 
                         <select
-                            name='administrators'
+                            className={selectAdminValue}
+                            name='selectAdminValue'
                             id='role-select'
-                            className='registration-value'>
-                                <option value='administrator' disabled>
+                            value={selectAdminValue}
+                            onChange={ event => handleChangeSignUpForm(event, 'selectAdminValue', 'selectAdminError' )}
+                            onBlur={event => handleCheckEmptySignUpForm(event, 'selectAdminValue', 'selectAdminError')}>    
+                                <option value='' disabled>
                                     Please, choose administrator
                                 </option>
+
+                            {
+                                admins.map(admin => {
+                                    const {_id, userName, login } = admin
+                                    return <option value = {_id}>{`${userName}, ${login}`}</option> 
+                                })
+                            }
                         </select>
+                        {selectAdminError === 'empty' && (<span className='registration-error'>Choose administrator</span>)}
                     </div>
                 )}
 
