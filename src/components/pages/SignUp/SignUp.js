@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import '../SignUp/SignUp.scss';
 
+import { AuthInput } from '../../authForm';
 import { authApi } from '../../../api/authApi';
 import { usersApi } from '../../../api/usersApi';
 import { Routes } from '../../../utils/routes';
@@ -11,7 +12,7 @@ import { Routes } from '../../../utils/routes';
 const SignUp = () => {
     const [signUpForm, setSignUpForm] = useState({
         userNameValue: '',
-        loginValue: '',
+        nickNameValue: '',
         passwordValue: '',
         repeatedPasswordValue: '',
         selectRoleValue: '',
@@ -20,7 +21,7 @@ const SignUp = () => {
      
       const [signUpFormError, setSignUpFormError] = useState({
         userNameError: '',
-        loginError: '',
+        nickNameError: '',
         passwordError: '',
         repeatedPasswordError: '',
         selectRoleError: '',
@@ -29,7 +30,7 @@ const SignUp = () => {
     
       const { 
           userNameValue, 
-          loginValue, 
+          nickNameValue, 
           passwordValue, 
           repeatedPasswordValue, 
           selectRoleValue,
@@ -38,7 +39,7 @@ const SignUp = () => {
 
       const { 
           userNameError, 
-          loginError, 
+          nickNameError, 
           passwordError, 
           repeatedPasswordError, 
           selectRoleError,
@@ -118,11 +119,11 @@ const SignUp = () => {
     
         const mailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     
-        if(!mailRegex.test(loginValue) && loginValue !== ''){
+        if(!mailRegex.test(nickNameValue) && nickNameValue !== ''){
     
-            signUpFormErrorCopy['loginError'] = 'notValid';
+            signUpFormErrorCopy['nickNameError'] = 'notValid';
         } else {
-            await handleCheckUserExists(signUpFormErrorCopy, 'login', userNameValue, 'loginError')
+            await handleCheckUserExists(signUpFormErrorCopy, 'login', userNameValue, 'nickNameError')
         }
       }
     
@@ -150,7 +151,7 @@ const SignUp = () => {
                     await handleCheckValidNickname(signUpFormErrorCopy);
                     break
 
-                case 'loginValue':
+                case 'nickNameValue':
                     await handleCheckValidEmail(signUpFormErrorCopy);
                 break
 
@@ -231,13 +232,27 @@ const SignUp = () => {
 
           const newUser ={
             userName: userNameValue,
-            login: loginValue,
+            login: nickNameValue,
             password: passwordValue,
             role: selectRoleValue
           }
 
+          if(selectRoleValue === 'user') {
+            newUser.admin = selectAdminValue
+          }
+
         const response = await authApi.signUpUser(newUser)
         console.log('response', response);
+      }
+
+      const roleSelectOption = () => {
+          return (
+              <>
+                <option value='' selected disabled>Please, choose a role</option>
+                <option value='user'>User</option>
+                <option value='admin'>Administrator</option>
+              </>
+          )
       }
 
     return (
@@ -245,27 +260,36 @@ const SignUp = () => {
         <div className='container'>
             <form className ='form-signUp' onSubmit={handleSubmitForm}>
                 <h1>Sign Up</h1>
-                <div className = 'input-block'>
-                    <label 
-                    for='logUp' 
-                    className = 'title-signUp'>
-                        Nickname
-                    </label>
 
-                    <input 
-                        type='text' 
-                        placeholder='Nickname' 
-                        value={userNameValue}
-                        name='userNameValue'
-                        onChange={ event => handleChangeSignUpForm(event, 'userNameValue', 'userNameError' )}
-                        onBlur={ event => handleCheckEmptySignUpForm(event, 'userNameValue', 'userNameError')}
-                    />
-                    {userNameError === 'empty' && <span className='registration-error'>Enter a nickname</span>}
-                    {userNameError === 'notValid' && <span className='registration-error'>At least 5 symbols and at least 3 letters</span>}
-                    {userNameError === 'alreadyExist' &&  <span className='registration-error'>This nickname is already registered</span>}
-                </div>
+                <AuthInput inputTitle = 'Nickname'
+                    disabled= {false}
+                    inputValueName = 'nicknameValue'
+                    inputErrorName = 'nicknameError'
+                    inputValue = { userNameValue }
+                    inputError = { userNameError }
+                    emptyValidationText = 'enter nickname, please'
+                    invalidValidationText = 'nickname format is incorrect'  
+                    existsValidationText = 'This nickname has already been registered' 
+                    matchValidationText = ''
+                    handleChangeForm = { handleChangeSignUpForm }
+                    handleCheckValidForm = { handleCheckEmptySignUpForm } 
+                />
 
-                <div className = 'input-block'>
+                <AuthInput inputTitle = 'Log In'
+                    disabled= {false}
+                    inputValueName = 'nicknameValue'
+                    inputErrorName = 'nicknameError'
+                    inputValue = { nickNameValue }
+                    inputError = { nickNameError }
+                    emptyValidationText = 'Enter login, please'
+                    invalidValidationText = 'Incorrect format'  
+                    matchValidationText = ''
+                    existsValidationText = 'This login is already registered' 
+                    handleChangeForm = { handleChangeSignUpForm }
+                    handleCheckValidForm = { handleCheckEmptySignUpForm } 
+                />
+
+                {/* <div className = 'input-block'>
                     <label 
                         for='logUp' 
                         className = 'title-signUp'>
@@ -273,19 +297,33 @@ const SignUp = () => {
                     </label>
 
                     <input 
-                        type='email' 
+                        type='text' 
                         placeholder='Login or email'
-                        name= 'loginValue'
-                        value={loginValue}
-                        onChange={ event => handleChangeSignUpForm(event, 'loginValue', 'loginError' )}
-                        onBlur={event => handleCheckEmptySignUpForm(event, 'loginValue', 'loginError')}
+                        name= 'nickNameValue'
+                        value={nickNameValue}
+                        onChange={ event => handleChangeSignUpForm(event, 'nickNameValue', 'nickNameError' )}
+                        onBlur={event => handleCheckEmptySignUpForm(event, 'nickNameValue', 'nickNameError')}
                     />
-                    {loginError === 'empty' && <span className='registration-error'>Enter login</span>}
-                    {loginError === 'notValid' && <span className='registration-error'>Incorrect format</span>}
-                    {loginError === 'alreadyExist' &&  <span className='registration-error'>This login is already registered</span>}
-                </div>
+                    {nickNameError === 'empty' && <span className='registration-error'>Enter login</span>}
+                    {nickNameError === 'notValid' && <span className='registration-error'>Incorrect format</span>}
+                    {nickNameError === 'alreadyExist' &&  <span className='registration-error'>This login is already registered</span>}
+                </div> */}
 
-                <div className = 'input-block'>
+                    <AuthInput inputTitle = 'Password'
+                        disabled= {false}
+                        inputValueName = 'passwordValue'
+                        inputErrorName = 'passwordError'
+                        inputValue = { passwordValue }
+                        inputError = { passwordError }
+                        emptyValidationText = 'Enter your password, please'
+                        invalidValidationText = 'Password must contain at least 5 characters (at least 1 letter and 1 number)'  
+                        existsValidationText = '' 
+                        matchValidationText = ''
+                        handleChangeForm = { handleChangeSignUpForm }
+                        handleCheckValidForm = { handleCheckEmptySignUpForm } 
+                />
+
+                {/* <div className = 'input-block'>
                     <label 
                     for='password' 
                     className = 'title-signUp'>
@@ -303,9 +341,23 @@ const SignUp = () => {
 
                     {passwordError === 'empty' && <span className='registration-error'>Enter your password</span>}
 				    {passwordError === 'notValid' && <span className='registration-error'>Password must contain at least 5 characters (at least 1 letter and 1 number)</span>}
-                </div>
+                </div> */}
 
-                <div className = 'input-block'>
+                        <AuthInput inputTitle = 'Repeat password'
+                            disabled={passwordValue === '' ? true : false}
+                            inputValueName = 'repeatedPasswordValue'
+                            inputErrorName = 'repeatedPasswordError'
+                            inputValue = { repeatedPasswordValue }
+                            inputError = { repeatedPasswordError }
+                            emptyValidationText = 'Repeated your password, please'
+                            invalidValidationText = ''  
+                            existsValidationText = '' 
+                            matchValidationText = 'Passwords must match'
+                            handleChangeForm = { handleChangeSignUpForm }
+                            handleCheckValidForm = { handleCheckEmptySignUpForm } 
+                />
+
+                {/* <div className = 'input-block'>
                     <label 
                         for='password'
                         className = 'title-signUp'>
@@ -323,7 +375,7 @@ const SignUp = () => {
                     />
                     {repeatedPasswordError === 'empty' && <span className='registration-error'>Repeated passwor</span>}
 					{repeatedPasswordError === 'notMatch' && <span className='registration-error'>Passwords must match</span>}
-                </div>
+                </div> */}
 
                 <div className='registration-input'>
                     <div>
@@ -346,10 +398,7 @@ const SignUp = () => {
 
                         onBlur={event => handleCheckEmptySignUpForm(event, 'selectRoleValue', 'selectRoleError')}>
 
-                            <option value='' selected disabled>Please, choose a role</option>
-                            <option value='user'>User</option>
-                            <option value='admin'>Administrator</option>
-
+                        {roleSelectOption()}
                     </select>
                     {selectRoleError === 'empty' && (<span className='registration-error'>Choose a role</span>)}
                 </div>

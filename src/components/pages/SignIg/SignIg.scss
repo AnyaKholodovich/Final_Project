@@ -30,7 +30,7 @@
 		line-height: 35px;
 	}
 
-	input[type=email], 
+	input[type=text], 
 	input[type=password]{
 		width: 100%;
 		padding: 8px 4px 8px 10px;
@@ -61,12 +61,12 @@
 			color: rgba(37,21,26,0.5);
 		}
 
-		input[type=email]:hover,
+		input[type=text]:hover,
 		input[type=password]:hover {
 			border-color: #333;
 		}
 		
-		input[type=email]:focus,
+		input[type=text]:focus,
 		input[type=password]:focus,
 		input[type=submit]:focus {
 			box-shadow:

@@ -2,20 +2,22 @@ import React, { useState } from 'react';
 
 import './SignIg.scss';
 
+import { AuthInput } from '../../authForm/authInput/AuthInput';
+import { authApi } from '../../../api/authApi';
 import { Routes } from '../../../utils/routes';
 import { Link } from "react-router-dom";
 
 const SignIg = () => {
 
     const [loginForm, setLoginForm] = useState ({
-        loginValue: '', 
+        nickNameValue: '', 
         passwordValue: ''
     
     });
 
       //types of form errors 'empty', 'notValid', 'notExists'
 	const [loginFormError, setLoginFormError] = useState({
-		loginError:'',
+		nickNameError:'',
 		passwordError: ''
 	});
 
@@ -27,6 +29,7 @@ const SignIg = () => {
 		}
 		return false;
 	}
+
 
     const handleCheckEmptyForm  = (event = {}, inputName = '', errorName= '') => {
 
@@ -42,7 +45,7 @@ const SignIg = () => {
             setLoginFormError(loginFormErrorCopy)
         } else {
             //Ckeck all input
-            resultCheckEmptyLogin = handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, 'loginValue', 'loginError')
+            resultCheckEmptyLogin = handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, 'nickNameValue', 'nickNameError')
             resultCheckEmptyPassword = handleCheckEmptyInput(loginFormCopy, loginFormErrorCopy, 'passwordValue', 'passwordError')
             resultCheckEmpty = resultCheckEmptyLogin || resultCheckEmptyPassword;
 
@@ -63,17 +66,38 @@ const SignIg = () => {
 		setLoginForm(loginFormCopy);
     }
 
-    const handleSubmitForm = (event) => {
+    const handleSubmitForm = async(event) => {
 		event.preventDefault();
 
-        //If form is empty return from this function
 		if ((handleCheckEmptyForm())){
 			return;
 		}
+        
+        const user = {
+            userName: nickNameValue,
+            password: passwordValue
+        }
+
+        try {
+            const res = await authApi.signInUser(user)
+            console.log('res', res)
+        } catch (error) {
+            const loginFormErrorCopy = { ...loginFormError }
+            console.log('signIn error', error.response.data.message)
+            const errorMessage = error.response.data.message
+
+            if (errorMessage === 'No user with such userName') {
+                loginFormErrorCopy['nickNameError'] = 'notExists'
+            } else if (errorMessage === 'SignIn error') {
+                loginFormErrorCopy['passwordError'] = 'notValid'
+            }
+
+            setLoginFormError(loginFormErrorCopy)
+        }
 	}
   
-    const { loginValue, passwordValue } = loginForm;
-	const { loginError, passwordError } = loginFormError;
+    const { nickNameValue, passwordValue } = loginForm;
+	const { nickNameError, passwordError } = loginFormError;
 
 
     return (
@@ -82,36 +106,59 @@ const SignIg = () => {
                 <form className ='form-signIn' onSubmit={handleSubmitForm}>
                     <h1>Sign In</h1>
                     <div>
-                        <label 
+
+                    <AuthInput inputTitle = 'Nickname'
+                    disabled= {false}
+                    inputValueName = 'nicknameValue'
+                    inputErrorName = 'nicknameError'
+                    inputValue = { nickNameValue }
+                    inputError = { nickNameError }
+                    emptyValidationText = 'enter nickname, please'
+                    invalidValidationText = ''  
+                    existsValidationText = 'User with this nickname already exists' 
+                    matchValidationText = ''
+                    handleChangeForm = { handleChangeLoginForm }
+                    handleCheckValidForm = { handleCheckEmptyForm } 
+                />
+
+                        {/* <label 
                             for='login' 
                             className = 'title-signIn'>
                                 Nickname
                         </label>
 
                         <input 
-                            type='email' 
-                            name='loginValue' 
-                            value = {loginValue} 
-                            onChange ={event => handleChangeLoginForm(event,'loginValue', 'loginError')}
-							onBlur={event => handleCheckEmptyForm(event, 'loginValue', 'loginError')}	
+                            type='text' 
+                            name='nickNameValue' 
+                            value = {nickNameValue} 
+                            onChange ={event => handleChangeLoginForm(event,'nickNameValue', 'nickNameError')}
+							onBlur={event => handleCheckEmptyForm(event, 'nickNameValue', 'nickNameError')}	
                             placeholder='Enter nickname here' 
                         />
 
                         {
-                        loginError === 'empty' &&	
+                        nickNameError === 'empty' &&	
                         <span className='logIn-error'>Введите логин</span>
                         }
 
 						{
-                        loginError === 'notValid' &&
-                        <span className='logIn-error'>Формат логина неверный</span>
-                        }
-
-						{
-                        loginError === 'notExists' && 
+                        nickNameError === 'notExists' && 
                         <span className='logIn-error'>Пользователя с таким логином не существует</span> 
-                        }
+                        } */}
                     </div>
+                   < AuthInput inputTitle = 'Password'
+                        disabled= {false}
+                        inputValueName = 'passwordValue'
+                        inputErrorName = 'passwordError'
+                        inputValue = { passwordValue }
+                        inputError = { passwordError }
+                        emptyValidationText = 'Enter your password, please'
+                        invalidValidationText = 'Wrong password'  
+                        existsValidationText = '' 
+                        matchValidationText = ''
+                        handleChangeForm = { handleChangeLoginForm }
+                        handleCheckValidForm = { handleCheckEmptyForm } 
+                />
 
                     <div>
                         <label 
