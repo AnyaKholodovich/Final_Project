@@ -5,16 +5,18 @@
 }
 body {
   background: #fff;
-  background-size: 100%;
-  background-image: url(/src/img/back_white.jpg);
-  background-attachment: scroll;
+  background-size: 120%;
+  background-image: url(/src/img/flowers.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   background-position: center;
 }
 
 
 .App {
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Karla', sans-serif;
   text-align: center;
 }
+
 

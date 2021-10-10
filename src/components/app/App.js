@@ -1,44 +1,49 @@
 import React from 'react';
-
-import { Navigation } from '../navigation/index';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import './App.css';
 
-
 import { Routes } from '../../utils/routes';
-// import { AuthorizeRoute, NotAuthorizeRoute } from '../routes';
-import { SignIg, SignUp, Tasks, Users} from '../pages/index';
+import { useSelector} from 'react-redux';
+import { AuthorizeRoute, NotAuthorizeRoute } from '../routes';
+import {Home, SignIg, SignUp, Tasks, Users} from '../pages/index';
 
 
 
 function App() {
 
+  const { token, role } = useSelector(state => state.authReducer);
+
+  // const isAuthorized = Boolean (getCookie ('authorization'));
+  // const userRole = getCookie ('role');
+
   return (
     <Router>
-      {/* <NotAuthorizeRoute path={Routes.SignInRoute} component ={SignIg} /> */}
 
-      <Route exact path={Routes.SignInRoute}>
-    		<SignIg />
-    	</Route>
+      <NotAuthorizeRoute
+        path={Routes.HomeRoute} 
+        component = {Home} />
 
-      {/* <NotAuthorizeRoute path={Routes.SignUpRoute} component ={SignUp}/> */}
-      <Route exact path={Routes.SignUpRoute}>
-    		<SignUp />
-    	</Route>
+			<NotAuthorizeRoute
+       path={Routes.SignInRoute} 
+       component = {SignIg} />
+				
+			<NotAuthorizeRoute 
+      path={Routes.SignUpRoute} 
+      component = {SignUp} />		
 
-      {/* <AuthorizeRoute path={Routes.TasksRoute} component ={Tasks}/> */}
-      <Route exact path={Routes.TasksRoute}>
-        <Navigation />
-    		<Tasks />
-    	</Route>
+			<AuthorizeRoute 
+      path={Routes.TasksRoute  }
+      isAuthorized={Boolean(token)}
+			hasPermission={role === 'user'} 
+      component = {Tasks} />
 
-      {/* <AuthorizeRoute path={Routes.UsersRoute} component ={Users}/> */}
-      <Route exact path={Routes.UsersRoute}>
-        <Navigation />
-    		<Users />
-    	</Route>
+			<AuthorizeRoute 
+      path={Routes.UsersRoute}
+      isAuthorized={Boolean(token)}
+			hasPermission={role === 'admin'}
+      component = {Users}/>
+
     </Router>
     
   );

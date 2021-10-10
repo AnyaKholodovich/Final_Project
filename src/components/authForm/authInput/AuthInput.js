@@ -1,9 +1,9 @@
 import React from 'react';
 
-import '../AuthForm.scss';
+import './AuthForm.scss';
 
 const AuthInput = ( 
-    inputTitle,
+    {inputTitle,
     disabled,
     inputError, 
     matchValidationText,
@@ -12,34 +12,38 @@ const AuthInput = (
     invalidValidationText, 
     existsValidationText,  
     inputValue, 
-    inputValueName, 
+    inputValueName,
+    inputType,
+    inputplaceholder, 
     handleChangeForm, 
-    handleCheckEmptySignForm  ) => {
+    handleCheckValidForm}  ) => {
 
     return (
         <div className = 'input-block'>
-        <label 
-        for='logUp' 
-        className = 'title-signUp'>
-            { inputTitle }
-        </label>
+            {/* <label 
+            for='logUp' 
+            className = 'title-sign'>
+                { inputTitle }
+            </label> */}
 
-        <input 
-            type='text' 
-            placeholder='Nickname' 
-            value={inputValue}
-            name= { inputValueName }
-            onChange={ event => handleChangeForm(event, inputValueName, inputErrorName )}
-            onBlur={ event => handleCheckEmptySignForm(event, inputValueName, inputErrorName)}
-            disabled = {disabled}
-        />
-        {inputError === 'empty' && (<span className='registration-error'>  { emptyValidationText } </span>)}
-        {inputError === 'notValid' && (<span className='registration-error'> { invalidValidationText } </span>)}
-        {inputError === 'alreadyExist' &&  (<span className='registration-error'> { existsValidationText } </span>)}
-        {inputError === 'notMatch' && (
-        <span className='registration-error'> 
-        { matchValidationText } </span>)}
-    </div>
+            <input 
+                type = { inputType }
+                placeholder= { inputplaceholder }
+                value = { inputValue }
+                name = { inputValueName }
+                onChange={ event => handleChangeForm(event, inputValueName, inputErrorName )}
+                onBlur={ event => handleCheckValidForm(event, inputValueName, inputErrorName)}
+                disabled = {disabled}
+            />
+            <div className='registration-error'>
+            {inputError === 'empty' && (<span>  { emptyValidationText } </span>)}
+            {inputError === 'notValid' && (<span> { invalidValidationText } </span>)}
+            {inputError === 'alreadyExist' &&  (<span> { existsValidationText } </span>)}
+            {inputError === 'notMatch' && (
+            <span className='registration-error'> { matchValidationText } </span>)}
+            </div>
+            
+        </div>
     )
 }
 

@@ -1,7 +1,11 @@
 import React from 'react';
+import TodoApp from '../../toDoApp/toDoApp';
 
 const Tasks = () => {
-    return <h1>Страница задач</h1>
-}
-
+    return (
+        <div className='App'>
+         <TodoApp />
+        </div>
+      );
+    }
 export default Tasks;

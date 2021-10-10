@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
+// import Jwt  from 'jsonwebtoken';
+import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 
 import './SignIg.scss';
 
-import { AuthInput } from '../../authForm/authInput/AuthInput';
+import  AuthInput  from '../../authForm/authInput/AuthInput';
 import { authApi } from '../../../api/authApi';
-import { Routes } from '../../../utils/routes';
-import { Link } from "react-router-dom";
+import { Routes, linkToRoute } from '../../../utils/routes';
+import { signIn } from '../../../redux/actions/toDoAppActions';
+import { setCookie } from '../../../utils/getCookies';
 
 const SignIg = () => {
+
+    const dispatch = useDispatch();
+    const history = useHistory();
 
     const [loginForm, setLoginForm] = useState ({
         nickNameValue: '', 
@@ -29,7 +36,6 @@ const SignIg = () => {
 		}
 		return false;
 	}
-
 
     const handleCheckEmptyForm  = (event = {}, inputName = '', errorName= '') => {
 
@@ -80,7 +86,18 @@ const SignIg = () => {
 
         try {
             const res = await authApi.signInUser(user)
-            console.log('res', res)
+            
+            const { token, role } = res.data
+            setCookie('role', role)
+            setCookie('authorization', token)
+            dispatch(signIn({ role, token}))
+
+            if ( res.data.role === 'admin'){
+                linkToRoute(history, Routes.UsersRoute)
+            }else{
+                linkToRoute(history, Routes.TasksRoute)
+            }
+
         } catch (error) {
             const loginFormErrorCopy = { ...loginFormError }
             console.log('signIn error', error.response.data.message)
@@ -101,55 +118,35 @@ const SignIg = () => {
 
 
     return (
-        <section className="logIn"> 
+        <section className="log In"> 
             <div className="container">
-                <form className ='form-signIn' onSubmit={handleSubmitForm}>
-                    <h1>Sign In</h1>
-                    <div>
+                <form className ='form' onSubmit={handleSubmitForm}>
+                    <h1 className ='login-title'>Sign In</h1>
+                    <div className = 'span-txt'><span >Create an account to enjoy all the services without any ads for free!</span></div>
+                    
 
                     <AuthInput inputTitle = 'Nickname'
                     disabled= {false}
-                    inputValueName = 'nicknameValue'
-                    inputErrorName = 'nicknameError'
+                    inputValueName = 'nickNameValue'
+                    inputErrorName = 'nickNameError'
+                    inputplaceholder = 'Nickname'
+                    inputType ='text'
                     inputValue = { nickNameValue }
                     inputError = { nickNameError }
-                    emptyValidationText = 'enter nickname, please'
+                    emptyValidationText = 'Enter nickname, please'
                     invalidValidationText = ''  
                     existsValidationText = 'User with this nickname already exists' 
                     matchValidationText = ''
                     handleChangeForm = { handleChangeLoginForm }
                     handleCheckValidForm = { handleCheckEmptyForm } 
                 />
-
-                        {/* <label 
-                            for='login' 
-                            className = 'title-signIn'>
-                                Nickname
-                        </label>
-
-                        <input 
-                            type='text' 
-                            name='nickNameValue' 
-                            value = {nickNameValue} 
-                            onChange ={event => handleChangeLoginForm(event,'nickNameValue', 'nickNameError')}
-							onBlur={event => handleCheckEmptyForm(event, 'nickNameValue', 'nickNameError')}	
-                            placeholder='Enter nickname here' 
-                        />
-
-                        {
-                        nickNameError === 'empty' &&	
-                        <span className='logIn-error'>Введите логин</span>
-                        }
-
-						{
-                        nickNameError === 'notExists' && 
-                        <span className='logIn-error'>Пользователя с таким логином не существует</span> 
-                        } */}
-                    </div>
+                  
                    < AuthInput inputTitle = 'Password'
                         disabled= {false}
                         inputValueName = 'passwordValue'
                         inputErrorName = 'passwordError'
+                        inputplaceholder = 'Password'
+                        inputType ='text'
                         inputValue = { passwordValue }
                         inputError = { passwordError }
                         emptyValidationText = 'Enter your password, please'
@@ -160,44 +157,16 @@ const SignIg = () => {
                         handleCheckValidForm = { handleCheckEmptyForm } 
                 />
 
-                    <div>
-                        <label 
-                            for='password' 
-                            className = 'title-signIn'>
-                                Password
-                        </label>
-
-                        <input 
-                            type='password' 
-                            value = {passwordValue} 
-                            onChange ={event => handleChangeLoginForm(event,'passwordValue', 'passwordError')}
-							onBlur={event => handleCheckEmptyForm(event, 'passwordValue', 'passwordError')}	
-                            name='passwordValue' 
-                            placeholder='Enter password here' 
-                            />
-
-                        {
-                            passwordError === 'empty' && 
-                            <span className='logIn-error'>Введите пароль</span>
-                        }
-
-						{
-                            passwordError === 'notValid' &&
-                            <span className='logIn-error'>Пароль неверный</span>
-                        }
-                    </div>
-
-                    <div className='logIn-button'>
-                        <input type ='submit' value='Sign In' />
+                    <div className='button'>
+                        <input type ='submit' value='Create Account' />
                     </div>
 
                     <div className ='logIn-signUp'>
-                        <Link to={Routes.SignUpRoute}>Sign Up</Link>
+                    Already Have An Account?<Link to={Routes.SignUpRoute}>Sign Up</Link>
                     </div>  
                 </form>
             </div>
     </section>
-   
 );
 }
 

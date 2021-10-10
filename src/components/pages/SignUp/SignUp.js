@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import '../SignUp/SignUp.scss';
 
-import { AuthInput } from '../../authForm';
+import AuthInput from '../../authForm/authInput/AuthInput';
 import { authApi } from '../../../api/authApi';
 import { usersApi } from '../../../api/usersApi';
 import { Routes } from '../../../utils/routes';
@@ -11,8 +11,8 @@ import { Routes } from '../../../utils/routes';
 
 const SignUp = () => {
     const [signUpForm, setSignUpForm] = useState({
-        userNameValue: '',
         nickNameValue: '',
+        loginValue: '',
         passwordValue: '',
         repeatedPasswordValue: '',
         selectRoleValue: '',
@@ -20,8 +20,8 @@ const SignUp = () => {
       });
      
       const [signUpFormError, setSignUpFormError] = useState({
-        userNameError: '',
         nickNameError: '',
+        loginError: '',
         passwordError: '',
         repeatedPasswordError: '',
         selectRoleError: '',
@@ -29,8 +29,8 @@ const SignUp = () => {
       });
     
       const { 
-          userNameValue, 
           nickNameValue, 
+          loginValue, 
           passwordValue, 
           repeatedPasswordValue, 
           selectRoleValue,
@@ -38,8 +38,8 @@ const SignUp = () => {
         } = signUpForm;
 
       const { 
-          userNameError, 
           nickNameError, 
+          loginError, 
           passwordError, 
           repeatedPasswordError, 
           selectRoleError,
@@ -95,10 +95,10 @@ const SignUp = () => {
 
       const handleCheckValidNickname = async (signUpFormErrorCopy) => {
         const minLetters = /(?=(?:.*[a-zA-Z]){3,})/;
-            if(!minLetters.test(userNameValue) || !(userNameValue.length >= 5)){
-                signUpFormErrorCopy['userNameError'] = 'notValid';
+            if(!minLetters.test(nickNameValue) || !(nickNameValue.length >= 5)){
+                signUpFormErrorCopy['nickNameError'] = 'notValid';
         } else {
-            await handleCheckUserExists(signUpFormError, 'userName', userNameValue, 'userNameError')
+            await handleCheckUserExists(signUpFormError, 'userName', nickNameValue, 'nickNameError')
         }
       }	
 
@@ -119,11 +119,11 @@ const SignUp = () => {
     
         const mailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     
-        if(!mailRegex.test(nickNameValue) && nickNameValue !== ''){
+        if(!mailRegex.test(loginValue) && loginValue !== ''){
     
-            signUpFormErrorCopy['nickNameError'] = 'notValid';
+            signUpFormErrorCopy['loginError'] = 'notValid';
         } else {
-            await handleCheckUserExists(signUpFormErrorCopy, 'login', userNameValue, 'nickNameError')
+            await handleCheckUserExists(signUpFormErrorCopy, 'login', nickNameValue, 'loginError')
         }
       }
     
@@ -147,11 +147,11 @@ const SignUp = () => {
       const handleCheckValidInput = async (inputName, signUpFormErrorCopy) => {
           if (inputName !== ''){
               switch(inputName){
-                case 'userNameValue':
+                case 'nickNameValue':
                     await handleCheckValidNickname(signUpFormErrorCopy);
                     break
 
-                case 'nickNameValue':
+                case 'loginValue':
                     await handleCheckValidEmail(signUpFormErrorCopy);
                 break
 
@@ -231,8 +231,8 @@ const SignUp = () => {
           }
 
           const newUser ={
-            userName: userNameValue,
-            login: nickNameValue,
+            userName: nickNameValue,
+            login: loginValue,
             password: passwordValue,
             role: selectRoleValue
           }
@@ -258,29 +258,34 @@ const SignUp = () => {
     return (
     <section className='logUp'> 
         <div className='container'>
-            <form className ='form-signUp' onSubmit={handleSubmitForm}>
-                <h1>Sign Up</h1>
+            <form className ='form' onSubmit={handleSubmitForm}>
+                <h1 className ='logUp-title'>Sign Up</h1>
 
                 <AuthInput inputTitle = 'Nickname'
                     disabled= {false}
-                    inputValueName = 'nicknameValue'
-                    inputErrorName = 'nicknameError'
-                    inputValue = { userNameValue }
-                    inputError = { userNameError }
-                    emptyValidationText = 'enter nickname, please'
-                    invalidValidationText = 'nickname format is incorrect'  
+                    inputplaceholder = 'Nickname'
+                    inputValueName = 'nickNameValue'
+                    inputType ='text'
+                    inputErrorName = 'nickNameError'
+                    inputValue = { nickNameValue }
+                    inputError = { nickNameError }
+                    
+                    emptyValidationText = 'Enter nickname, please'
+                    invalidValidationText = 'Nickname format is incorrect'  
                     existsValidationText = 'This nickname has already been registered' 
                     matchValidationText = ''
                     handleChangeForm = { handleChangeSignUpForm }
                     handleCheckValidForm = { handleCheckEmptySignUpForm } 
                 />
 
-                <AuthInput inputTitle = 'Log In'
+                <AuthInput inputTitle = 'Login'
                     disabled= {false}
-                    inputValueName = 'nicknameValue'
-                    inputErrorName = 'nicknameError'
-                    inputValue = { nickNameValue }
-                    inputError = { nickNameError }
+                    inputplaceholder = 'Login'
+                    inputValueName = 'loginValue'
+                    inputType ='text'
+                    inputErrorName = 'loginError'
+                    inputValue = { loginValue }
+                    inputError = { loginError }
                     emptyValidationText = 'Enter login, please'
                     invalidValidationText = 'Incorrect format'  
                     matchValidationText = ''
@@ -299,18 +304,20 @@ const SignUp = () => {
                     <input 
                         type='text' 
                         placeholder='Login or email'
-                        name= 'nickNameValue'
-                        value={nickNameValue}
-                        onChange={ event => handleChangeSignUpForm(event, 'nickNameValue', 'nickNameError' )}
-                        onBlur={event => handleCheckEmptySignUpForm(event, 'nickNameValue', 'nickNameError')}
+                        name= 'loginValue'
+                        value={loginValue}
+                        onChange={ event => handleChangeSignUpForm(event, 'loginValue', 'loginError' )}
+                        onBlur={event => handleCheckEmptySignUpForm(event, 'loginValue', 'loginError')}
                     />
-                    {nickNameError === 'empty' && <span className='registration-error'>Enter login</span>}
-                    {nickNameError === 'notValid' && <span className='registration-error'>Incorrect format</span>}
-                    {nickNameError === 'alreadyExist' &&  <span className='registration-error'>This login is already registered</span>}
+                    {loginError === 'empty' && <span className='registration-error'>Enter login</span>}
+                    {loginError === 'notValid' && <span className='registration-error'>Incorrect format</span>}
+                    {loginError === 'alreadyExist' &&  <span className='registration-error'>This login is already registered</span>}
                 </div> */}
 
                     <AuthInput inputTitle = 'Password'
                         disabled= {false}
+                        inputplaceholder = 'Password'
+                        inputType ='text'
                         inputValueName = 'passwordValue'
                         inputErrorName = 'passwordError'
                         inputValue = { passwordValue }
@@ -345,6 +352,8 @@ const SignUp = () => {
 
                         <AuthInput inputTitle = 'Repeat password'
                             disabled={passwordValue === '' ? true : false}
+                            inputType ='text'
+                            inputplaceholder = 'Repeat password'
                             inputValueName = 'repeatedPasswordValue'
                             inputErrorName = 'repeatedPasswordError'
                             inputValue = { repeatedPasswordValue }
@@ -378,10 +387,9 @@ const SignUp = () => {
                 </div> */}
 
                 <div className='registration-input'>
-                    <div>
+                    <div className = 'title-signUp'>
                         <label 
                             for='password' 
-                            className = 'title-signUp'
 					        htmlFor='role-select'>
                                 Choose a role
                         </label>
@@ -400,18 +408,20 @@ const SignUp = () => {
 
                         {roleSelectOption()}
                     </select>
-                    {selectRoleError === 'empty' && (<span className='registration-error'>Choose a role</span>)}
+                    <div className='registration-error'>{selectRoleError === 'empty' && (<span>Choose a role</span>)}</div>
                 </div>
 
                 {selectRoleValue === 'user' && (
-                    <div className='registration'>
-                        <label
-                            className='title-signUp'
-                            htmlFor='administrator'>
-                            Choose administrator
-                        </label>
+                    <div className='registration-input'>
+                        <div className='title-signUp'>
+                            <label
+                                htmlFor='administrator'>
+                                Choose administrator
+                            </label>
+                        </div>
+                      
 
-                        <select
+                        <div><select
                             className={selectAdminValue}
                             name='selectAdminValue'
                             id='role-select'
@@ -428,12 +438,12 @@ const SignUp = () => {
                                     return <option value = {_id}>{`${userName}, ${login}`}</option> 
                                 })
                             }
-                        </select>
-                        {selectAdminError === 'empty' && (<span className='registration-error'>Choose administrator</span>)}
+                        </select> </div>
+                        <div className='registration-error'>{selectAdminError === 'empty' && (<span >Choose administrator</span>)}</div>
                     </div>
                 )}
 
-                <div className='logUp-button'>
+                <div className='button'>
                     <input type='submit' value='Sign Up'></input>
                 </div>
 

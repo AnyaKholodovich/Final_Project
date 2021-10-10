@@ -1,19 +1,22 @@
-// import React from 'react'
-// import { BrowserRouter as Route } from 'react-router-dom'
+import React from 'react'
+import { Route, Redirect } from 'react-router-dom';
 
-// import { Navigation } from '../../navigation';
+import { Navigation } from '../../navigation';
+import { Routes } from "../../../utils/routes";
 
-// const AuthorizeRoute = (props) => {
+const AuthorizeRoute = (props) =>{
+    const { component: path, Component,  isAuthorized, hasPermission } = props;
+    return( 
+        <Route exact path={path}>
+            {( isAuthorized && hasPermission) ?
+                <>
+                    <Navigation />
+                    <Component />
+                </> :
+                <Redirect to={Routes.SignInRoute} />
+            }
+        </Route>
+    )
+}
 
-//     const {component: Component, path} = props
-//     return (
-//         <div>
-//         <Route exact path= { path }>
-//             <Navigation />
-//             <Component />
-//         </Route>
-//         </div>
-//     )
-// }
-
-// export default AuthorizeRoute
+export default AuthorizeRoute;

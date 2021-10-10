@@ -17,26 +17,27 @@ const Navigation = () => {
     
     return (
         <div className = 'navigation-container'>
-            <div className={activeRoute === Routes.HomeRoute ? 'navigation-item-active' : 'navigation-item'}>
-                <Link to ={Routes.HomeRoute}>
-                    Домой
-                </Link>
-             </div>
-             <div className={activeRoute === Routes.TasksRoute ? 'navigation-item-active' : 'navigation-item'}>
-                <Link to ={Routes.TasksRoute}>
-                    Задачи
-                </Link>
-            </div>
-            <div className={activeRoute === Routes.SignInRoute ? 'navigation-item-active' : 'navigation-item'}>
-                <Link to ={Routes.SignInRoute}>
-                   Логин
-                </Link>
-            </div>
-            <div className={activeRoute === Routes.SignUpRoute ? 'navigation-item-active' : 'navigation-item'}>
-                <Link to ={Routes.SignUpRoute}>
-                    Регистрация
-                </Link>
-            </div>
+            
+                <div className={activeRoute === Routes.HomeRoute ? 'navigation-item-active' : 'navigation-item'}>
+                    <Link to ={Routes.HomeRoute}>
+                        Home
+                    </Link>
+                </div>
+                <div className={activeRoute === Routes.TasksRoute ? 'navigation-item-active' : 'navigation-item'}>
+                    <Link to ={Routes.TasksRoute}>
+                        tasks
+                    </Link>
+                </div>
+                <div className={activeRoute === Routes.SignInRoute ? 'navigation-item-active' : 'navigation-item'}>
+                    <Link to ={Routes.SignInRoute}>
+                    LogIn
+                    </Link>
+                </div>
+                <div className={activeRoute === Routes.SignUpRoute ? 'navigation-item-active' : 'navigation-item'}>
+                    <Link to ={Routes.SignUpRoute}>
+                    logUp
+                    </Link>
+                </div>
         </div>
     )
 }
