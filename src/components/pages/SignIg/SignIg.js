@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import Jwt  from 'jsonwebtoken';
+import jwt  from 'jsonwebtoken';
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 
@@ -87,10 +87,11 @@ const SignIg = () => {
         try {
             const res = await authApi.signInUser(user)
             
-            const { token, role } = res.data
-            setCookie('role', role)
+            const { token } = res.data
             setCookie('authorization', token)
-            dispatch(signIn({ role, token}))
+            const decodedData = jwt.decode(token)
+            const { role, id: userId } = decodedData
+            dispatch(signIn({ role, token, userId}))
 
             if ( res.data.role === 'admin'){
                 linkToRoute(history, Routes.UsersRoute)

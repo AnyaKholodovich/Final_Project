@@ -1,14 +1,11 @@
 import { getCookie } from "../../utils/getCookies";
+import jwt  from 'jsonwebtoken';
 
-	// const token = getCookie('authorization')
-	// const decodedData = jwt.decode(token) || {role: '', id: ''}
-	// const { role, id: userId } = decodedData
+	const token = getCookie('authorization')
+	const decodedData = jwt.decode(token) || { role: '', id: '' }
+	const { role, id: userId } = decodedData
 
-const initialState = { 
-    token: getCookie('authorization'),	
-    role: getCookie('role')
-    // userId: ''
- }
+const initialState = { token, role, userId }
 
 export const authReducer = (state = initialState, action) => {
 	const { type, payload } = action;
