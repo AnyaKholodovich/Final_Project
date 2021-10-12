@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { Routes, linkToRoute } from '../../../utils/routes';
+import { Routes, linkToRoute } from '../../utils/routes';
 import './Home.scss';
 
 const Home = () =>{
@@ -13,7 +13,6 @@ const Home = () =>{
         if (token) {
 			linkToStartPage(role)
 		} else {
-			// history.push(Routes.SignInRoute)
             linkToRoute(history, Routes.SignInRoute)
 		}
     }, []);

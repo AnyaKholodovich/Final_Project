@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 
 import './SignIg.scss';
 
-import  AuthInput  from '../../authForm/authInput/AuthInput';
-import { authApi } from '../../../api/authApi';
-import { Routes, linkToRoute } from '../../../utils/routes';
-import { signIn } from '../../../redux/actions/toDoAppActions';
-import { setCookie } from '../../../utils/getCookies';
+import  AuthInput  from '../../components/authForm/authInput/AuthInput';
+import { authApi } from '../../api/authApi';
+import { Routes, linkToRoute } from '../../utils/routes';
+import { signIn } from '../../redux/actions/toDoAppActions';
+import { setCookie } from '../../utils/getCookies';
 
 const SignIg = () => {
 

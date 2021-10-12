@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import '../SignUp/SignUp.scss';
+import './SignUp.scss';
 
-import AuthInput from '../../authForm/authInput/AuthInput';
-import { authApi } from '../../../api/authApi';
-import { usersApi } from '../../../api/usersApi';
-import { Routes } from '../../../utils/routes';
+import AuthInput from '../../components/authForm/authInput/AuthInput';
+import { authApi } from '../../api/authApi';
+import { usersApi } from '../../api/usersApi';
+import { Routes } from '../../utils/routes';
 
 
 const SignUp = () => {
@@ -102,18 +102,24 @@ const SignUp = () => {
         }
       }	
 
-      const handleCheckUserExists = async (signUpFormErrorCopy, fieldName, fielValue, errorName) => {
-          const body = {}
-          body[fieldName] = fielValue;
-          console.log('handleCheckUserExists', body);
-          return usersApi.ckeckUsersExists(body)
-          .then(res => {
-              const { data } = res
-              if(data.exists) {
-                signUpFormErrorCopy[errorName] = 'alredyExist' 
-              }
-          })
-      }
+    //   const handleCheckUserExists = async (signUpFormErrorCopy, fieldName, fielValue, errorName) => {
+    //       const body = {}
+    //       body[fieldName] = fielValue;
+    //       return usersApi.ckeckUsersExist(body) 
+    //       .then(res => {
+    //           const { data } = res
+    //           if(data.exists) {
+    //             signUpFormErrorCopy[errorName] = 'alredyExist' 
+    //           }
+    //       })
+    //   }
+
+    const handleCheckUserExists = async (fieldName, fieldValue) => {
+		const body = {};
+		body[fieldName] = fieldValue;
+
+		return usersApi.checkUsersExist(body)
+	}
     
       const handleCheckValidEmail = async (signUpFormErrorCopy) => {
     
@@ -215,8 +221,6 @@ const SignUp = () => {
 
             setSignUpFormError(signUpFormErrorCopy);
         }
-
-        
         return resultCheckEmpty;
       }
     
@@ -294,26 +298,6 @@ const SignUp = () => {
                     handleCheckValidForm = { handleCheckEmptySignUpForm } 
                 />
 
-                {/* <div className = 'input-block'>
-                    <label 
-                        for='logUp' 
-                        className = 'title-signUp'>
-                            Log In
-                    </label>
-
-                    <input 
-                        type='text' 
-                        placeholder='Login or email'
-                        name= 'loginValue'
-                        value={loginValue}
-                        onChange={ event => handleChangeSignUpForm(event, 'loginValue', 'loginError' )}
-                        onBlur={event => handleCheckEmptySignUpForm(event, 'loginValue', 'loginError')}
-                    />
-                    {loginError === 'empty' && <span className='registration-error'>Enter login</span>}
-                    {loginError === 'notValid' && <span className='registration-error'>Incorrect format</span>}
-                    {loginError === 'alreadyExist' &&  <span className='registration-error'>This login is already registered</span>}
-                </div> */}
-
                     <AuthInput inputTitle = 'Password'
                         disabled= {false}
                         inputplaceholder = 'Password'
@@ -330,26 +314,6 @@ const SignUp = () => {
                         handleCheckValidForm = { handleCheckEmptySignUpForm } 
                 />
 
-                {/* <div className = 'input-block'>
-                    <label 
-                    for='password' 
-                    className = 'title-signUp'>
-                        Password
-                    </label>
-
-                    <input  
-                    placeholder='Password' 
-                    type= 'text'
-				    name='passwordValue'
-				    value={passwordValue}
-				    onChange={ event => handleChangeSignUpForm(event, 'passwordValue', 'passwordError' )}
-				    onBlur={event => handleCheckEmptySignUpForm(event, 'passwordValue', 'passwordError')}
-                    />
-
-                    {passwordError === 'empty' && <span className='registration-error'>Enter your password</span>}
-				    {passwordError === 'notValid' && <span className='registration-error'>Password must contain at least 5 characters (at least 1 letter and 1 number)</span>}
-                </div> */}
-
                         <AuthInput inputTitle = 'Repeat password'
                             disabled={passwordValue === '' ? true : false}
                             inputType ='text'
@@ -365,26 +329,6 @@ const SignUp = () => {
                             handleChangeForm = { handleChangeSignUpForm }
                             handleCheckValidForm = { handleCheckEmptySignUpForm } 
                 />
-
-                {/* <div className = 'input-block'>
-                    <label 
-                        for='password'
-                        className = 'title-signUp'>
-                            Repeat password
-                    </label>
-
-                    <input 
-                        placeholder='Password'
-                        name='repeatedPasswordValue'
-                        type='text'
-                        value={repeatedPasswordValue}
-                        onChange={ event => handleChangeSignUpForm(event, 'repeatedPasswordValue', 'repeatedPasswordError' )}
-                        onBlur={event => handleCheckEmptySignUpForm(event, 'repeatedPasswordValue', 'repeatedPasswordError')}
-                        disabled={passwordValue === '' ? true : false}
-                    />
-                    {repeatedPasswordError === 'empty' && <span className='registration-error'>Repeated passwor</span>}
-					{repeatedPasswordError === 'notMatch' && <span className='registration-error'>Passwords must match</span>}
-                </div> */}
 
                 <div className='registration-input'>
                     <div className = 'title-signUp'>

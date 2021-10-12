@@ -12,3 +12,24 @@ export const signIn = data => {
 		payload: data
 	}
 }
+
+export const addUsersList = data => {
+	return {
+		type: 'ADD_USERS_LIST',
+		payload: data
+	}
+}
+
+export const addUserSearch = data => {
+	return {
+		type: 'ADD_USER_SEARCH',
+		payload: data
+	}
+}
+
+export const addUsersSearchList = data => {
+	return {
+		type: 'ADD_USERS_SEARCH_LIST',
+		payload: data
+	}
+}

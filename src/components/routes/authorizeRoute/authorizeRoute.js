@@ -5,7 +5,7 @@ import { Navigation } from '../../navigation';
 import { Routes } from "../../../utils/routes";
 
 const AuthorizeRoute = (props) =>{
-    const { component: path, Component,  isAuthorized, hasPermission } = props;
+    const { component:  Component, path, isAuthorized, hasPermission } = props;
     return( 
         <Route exact path={path}>
             {( isAuthorized && hasPermission) ?

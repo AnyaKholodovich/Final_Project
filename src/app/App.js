@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { useSelector} from 'react-redux';
 
 import './App.css';
 
-import { Routes } from '../../utils/routes';
-import { useSelector} from 'react-redux';
-import { AuthorizeRoute, NotAuthorizeRoute } from '../routes';
-import {Home, SignIg, SignUp, Tasks, Users} from '../pages/index';
+import { Routes } from '../utils/routes';
+import { AuthorizeRoute, NotAuthorizeRoute } from '../components/routes';
+import { Home, SignIg, SignUp, Tasks, Users } from '../pages';
 
 
 
@@ -43,6 +43,13 @@ function App() {
       isAuthorized={Boolean(token)}
 			hasPermission={role === 'admin'}
       component = {Users}/>
+
+      <AuthorizeRoute 
+        path={`${Routes.TasksRoute}/:id`}
+        isAuthorized={Boolean(token)}
+        hasPermission={role === 'admin'}
+        component = {Tasks}
+      />
 
     </Router>
     
