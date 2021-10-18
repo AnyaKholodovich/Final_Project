@@ -18,5 +18,4 @@ const AuthorizeRoute = (props) =>{
         </Route>
     )
 }
-
 export default AuthorizeRoute;

@@ -49,7 +49,8 @@
 		-ms-transition: all 0.3s ease-out;
 		-o-transition: all 0.3s ease-out;
 		transition: all 0.3s ease-out;
-		color: #fff;
+		color: #333;
+		font-weight: 100;
 		font-size: 13px;
 
 		&::-webkit-input-placeholder {
@@ -111,8 +112,8 @@
     cursor: pointer;
     transition: all 0.3s ease-out;
     font-size: 14px;
-    color: #8F7965;
-	background-color: #FFE1C7;
+    color: #fff;
+	background-color: #033653;
 }
  
 .form-signIn input[type=submit]:hover {

@@ -23,10 +23,10 @@
 		}
 
 		#role-select{
-			background-color: #9395A0;
 			border-radius: 6px;
 			border: none;
-			color: #fff;
+			color: #333;
+			border: 1.5px solid #74C6D2; 
 			width: 90%;
 			padding:10px 6px 10px 10px;
 			font-size: 14px;
@@ -34,14 +34,15 @@
 			font-weight: 100;
 			.registration-txt{
 				font-size: 14px;
+				color: #333;
 			}
 		}
 
 		.registration-value {
-			background-color: #9395A0;
+			background-color: #ECF7F9;
 			border-radius: 6px;
 			border: none;
-			color: #fff;
+			color: #333;
 			width: 90%;
 			padding:10px 6px 10px 10px;
 			font-size: 14px;
@@ -49,6 +50,7 @@
 			font-weight: 100;
 			.registration-txt{
 				font-size: 14px;
+				color: #333;
 			}
 		}
 	

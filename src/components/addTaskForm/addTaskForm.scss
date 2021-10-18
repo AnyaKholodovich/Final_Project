@@ -1,0 +1,136 @@
+
+.tasks{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    flex-wrap: wrap;
+
+    .container{
+
+        .toDoBlock {
+            color:#333;
+            font-family: 'Karla', sans-serif;
+            transition: all 0.8s ease-out;
+            font-size: 14px;
+            min-width: 900px;
+            width: 900px;
+            margin: 5px auto 5px;
+            padding: 10px;
+            background-color: aliceblue;
+            background-color:rgba(300, 300, 300, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 0 3px rgba(0,0,0,0.5);
+            text-align:center;
+
+            .textTitle{
+                margin: -10px 30px -10px 60px;
+            }
+
+            .add-input{
+                width: 530px;
+                padding:7px 7px 7px 20px;
+                margin: 25px 0 0 50px;
+                border: 1px solid #74C6D2; 
+                background-color: #fff;
+                border-radius: 6px;
+                box-shadow:
+                    0 1px 0 rgba(255,255,255,0.2),
+                    inset 0 1px 1px rgba(0,0,0,0.1);
+                -webkit-transition: all 0.3s ease-out;
+                -moz-transition: all 0.3s ease-out;
+                -ms-transition: all 0.3s ease-out;
+                -o-transition: all 0.3s ease-out;
+                transition: all 0.3s ease-out;
+                color: #32403B;
+                font-size: 12px;
+                justify-content: space-between;
+            }
+        
+            .toDoTxt {
+                margin-bottom: 10px;
+            }
+            
+            .add-btn {
+                font-size: 12px;
+                box-shadow: none;
+                cursor: pointer;
+                appearance: none;
+                color:#333;
+                padding: 5px 5px;
+                border-radius: 2px;
+                cursor: pointer;
+                border: none;
+                background-color: none;
+                outline: none; 
+                border: 0;
+                background: transparent;
+                text-align: center;
+                margin-left: 15px;
+              }
+
+              .btn{
+                font-size: 12px;
+                margin: 0 60px 0 0;
+                cursor: pointer;
+                color:#333;
+                border: none;
+                background-color: none;
+                outline: none; 
+                border: 0;
+                background: transparent;
+              }
+            
+            .warningText{
+                font-size: 12px;
+                margin-top: 10px;
+                color:darkred;
+            }
+            
+            ul{
+                padding: 0;
+            }
+            
+        }
+
+        .card{
+            display: inline-flex;
+            justify-content: space-between;
+        }
+
+        .first{
+            margin: 70px 0 0 0;
+            align-items: center;
+        }
+
+        .search-form{
+            display: inline-flex;
+            justify-content: space-between;
+            color: #32403B;
+            font-size: 12px;
+            margin: 0 0 0 250px;
+            align-items: center;
+
+            .search-input{
+                width: 250px;
+                padding:7px 7px 7px 20px;
+                margin: 0 0 0 50px;
+                border: 1px solid #74C6D2; 
+                background-color: #fff;
+                border-radius: 6px;
+                box-shadow:
+                    0 1px 0 rgba(255,255,255,0.2),
+                    inset 0 1px 1px rgba(0,0,0,0.1);
+                -webkit-transition: all 0.3s ease-out;
+                -moz-transition: all 0.3s ease-out;
+                -ms-transition: all 0.3s ease-out;
+                -o-transition: all 0.3s ease-out;
+                transition: all 0.3s ease-out;
+                color: #32403B;
+                font-size: 12px;
+            }
+
+        }
+    }
+    
+}

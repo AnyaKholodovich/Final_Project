@@ -2,29 +2,36 @@ import React from 'react';
 
 import './TaskUser.scss';
 
-
 function TaskUser(props) {
 
-	const { taskNumber, taskName, checked, onChange } = props;
+	const { taskNumber, taskName, checked, onChange, onClick, role, item } = props;
 	
 	return (
-		<li className='task-item'>
-			<span className='item-id'>{taskNumber}</span>
+		<div className='li-task'>
+			<li className='li-tasks'>
+				<input
+					className = 'custom-checkbox'
+					type ='checkbox'
+					id = {taskNumber}
+					name = {taskNumber}
+					checked = {checked}
+					onChange = {onChange}
+				/>
 
-			<label className='item-name' htmlFor={taskNumber}>
-				{taskName}
-			</label>
+				<label htmlFor={taskNumber}>
+						{taskName}
+				</label>
 
-			<input
-				className='item-check'
-				type='checkbox'
-				id={taskNumber}
-				name={taskNumber}
-				checked={checked}
-				onChange={onChange}
-			/>
+				{role === 'admin' && item.checked && (
+					<button className='btn-deleted' onClick={() => onClick()}>
+					Deleted
+				  </button>
+				)}
 
-		</li>
+			</li>
+
+			
+		</div>
 	)
 }
 

@@ -74,22 +74,31 @@ const checkInput = () =>{
 			return result;
 	};
 
-
 	return (
 		<>
 			<section className='users'>
-				<Search
-					placeholder='Enter nickname'
-					onChange={handleChangeSearchText}
-					onSubmit={handleSearchSubmit}
-					value={searchText}
-					nameInput='searchUserForm'
-				/>
-                
-				<div className="users-wraper">
-					<ul className="users-list">
-						{users && users.length > 0 && renderUsers(users)}
-					</ul>
+				<div className='container'> 
+					<div className='toDoBlock card first'>
+						<div className='textTitle'>
+							<h2>Users</h2>
+						</div>
+
+						<div className = 'search'>
+							<Search
+								placeholder='Enter nickname'
+								onChange={handleChangeSearchText}
+								onSubmit={handleSearchSubmit}
+								value={searchText}
+								nameInput='searchUserForm'
+							/>
+						</div>
+					</div>
+							
+					<div className="toDoBlock">
+						<ul className="users-list">
+							{users && users.length > 0 && renderUsers(users)}
+						</ul>
+					</div>
 				</div>
 			</section>
 		</>

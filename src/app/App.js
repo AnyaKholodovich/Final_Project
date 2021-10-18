@@ -16,7 +16,7 @@ function App() {
 
   // const isAuthorized = Boolean (getCookie ('authorization'));
   // const userRole = getCookie ('role');
-
+console.log('role', role, role === 'admin');
   return (
     <Router>
 
@@ -32,22 +32,30 @@ function App() {
       path={Routes.SignUpRoute} 
       component = {SignUp} />		
 
-			<AuthorizeRoute 
-      path={Routes.TasksRoute  }
-      isAuthorized={Boolean(token)}
-			hasPermission={role === 'user'} 
-      component = {Tasks} />
-
-			<AuthorizeRoute 
-      path={Routes.UsersRoute}
-      isAuthorized={Boolean(token)}
-			hasPermission={role === 'admin'}
-      component = {Users}/>
 
       <AuthorizeRoute 
-        path={`${Routes.TasksRoute}/:id`}
+        path={Routes.UsersRoute}
         isAuthorized={Boolean(token)}
         hasPermission={role === 'admin'}
+        // expectedRole = 'admin'
+        role = { role }
+        component = {Users}/>
+
+			<AuthorizeRoute 
+        path={Routes.TasksRoute  }
+        isAuthorized={Boolean(token)}
+        // expectedRole = 'user'
+        hasPermission={role === 'user'}
+        role = { role }
+        component = {Tasks} />
+
+      <AuthorizeRoute 
+        // path={`${Routes.TasksRoute}/:id`}
+        path='/tasks/:user_Id'
+        isAuthorized={Boolean(token)}
+        hasPermission={role === 'admin'}
+        // expectedRole = 'admin'
+        role = { role }
         component = {Tasks}
       />
 
