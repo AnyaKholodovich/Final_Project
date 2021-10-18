@@ -1,0 +1,22 @@
+.user-item {
+	color: #333;
+	display: flex;
+    justify-content: space-between;
+	align-items: center;
+	transition: 0.5s;
+
+    .user_inf{
+        .user_namber{
+            margin-right: 15px;
+        }
+    
+        .user_name{
+            margin-right: 15px;
+        }
+    }
+    
+    .user_login{
+        margin-right: 15px;
+    }
+}
+

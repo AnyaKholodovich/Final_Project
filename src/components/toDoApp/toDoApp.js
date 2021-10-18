@@ -13,9 +13,6 @@ function TodoApp() {
         .then((response) => response.json())
         .then((json) =>  setItems(json.slice(0, 10)))
     }, []);
-  
-
-  
 
   const handleСheckbox = (id) => {
     let newItems = items.slice();
@@ -103,39 +100,60 @@ function TodoApp() {
   });
 
     return (
-      <div className='toDoBlock'>
-        <h3 className='textTitle'>Список дел</h3>
-        <form onSubmit={handleSubmit}>
-          <div className='toDoTxt'>
-            <label htmlFor='new-todo'>Что нужно сделать?</label>
+      <section className='tasks'>
+         <div className="container">
+          <div className='toDoBlock card first'> 
+
+            <div className='textTitle'>
+              <h2>Tasks</h2>
+            </div>
+
+            <div>
+            <form className = 'search-form'>
+                <div><input
+                    type = 'text'
+                    placeholder = 'Search task'
+                    className = 'search-input'
+                    onChange = {(event) => setSearch(event.target.value)}
+                /></div>
+
+                <div><button className='add-btn'>SEARCH</button></div>
+              </form>
           </div>
-          <input
-            id='new-todo'
-            onChange={handleChange}
-            value={text}
-          />
-          <button className='add-btn'>
-            Добавить задачу #{items.length + 1}
-          </button>
-        </form>
-        <div className='warningText'>
-				{warningText}
-			</div>
-      <button
-				onClick={() => sortTop()} className='btn'>
-				Сортировать
-			</button>
-        {changeTask(filterList)}
-        <form className = 'search-form'>
-          <input
-              type = 'text'
-              placeholder = 'найти..'
-              className = 'search-input'
-              onChange = {(event) => setSearch(event.target.value)}
-          />
-          <button className='add-btn'>Искать</button>
-        </form>
+
+            <button
+              onClick={() => sortTop()} className='btn'>
+              SORT
+            </button>
+          </div> 
+
+          <div className='toDoBlock'>
+            <div className='tasks-list'>
+            
+              <form onSubmit={handleSubmit}>
+                  <input
+                    id='new-todo'
+                    onChange={handleChange}
+                    value={text}
+                    className='add-input'
+                    placeholder = 'Enter a new task'
+                  />
+
+                <button className='add-btn'>
+                  Add task №{items.length + 1}
+                </button>
+              </form>
+            </div>
+
+            <div className='warningText'>
+            {warningText}
+            </div>
+
+            {changeTask(filterList)}
+
+          </div>
       </div>
+      </section>
     );
 }
 
