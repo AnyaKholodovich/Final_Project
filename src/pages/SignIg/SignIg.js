@@ -73,9 +73,10 @@ const SignIg = () => {
     }
 
     const handleSubmitForm = async(event) => {
-		event.preventDefault();
+		try {
+            event.preventDefault();
 
-		if ((handleCheckEmptyForm())){
+		if (handleCheckEmptyForm()){
 			return;
 		}
         
@@ -83,8 +84,6 @@ const SignIg = () => {
             userName: nickNameValue,
             password: passwordValue
         }
-
-        try {
             const res = await authApi.signInUser(user)
             
             const { token } = res.data
@@ -93,7 +92,7 @@ const SignIg = () => {
             const { role, id: userId } = decodedData
             dispatch(signIn({ role, token, userId}))
 
-            if ( res.data.role === 'admin'){
+            if ( role === 'admin'){
                 linkToRoute(history, Routes.UsersRoute)
             }else{
                 linkToRoute(history, Routes.TasksRoute)
