@@ -16,6 +16,8 @@ const Tasks = () => {
   const { user_Id } = useParams();
   const dispatch = useDispatch();
 //   const [tasks, setTasks] = useState([])
+const [warningText, setWarningText] = useState('');
+const [text, setText] = useState('');
   let [items, setItems] = useState([]);
   const [textForm, setTextForm] = useState({
 	text: ''
@@ -32,12 +34,6 @@ const { token, role, tasksList } = appState;
     }
 	}, [])
 
-	useEffect(() => {
-		fetch('https://jsonplaceholder.typicode.com/todos')
-		  .then((response) => response.json())
-		  .then((json) =>  setItems(json.slice(0, 10)))
-	  }, []);
-
 	const getTasks = () => {
 
 		tasksApi.getTasks(token)
@@ -48,21 +44,6 @@ const { token, role, tasksList } = appState;
 				console.error(error.message)
 			})
 	}
-
-	// const getTasks = () => {
-
-	// 	tasksApi.getTasks(token)
-	// 	.then(res => {
-			
-	// 		const tasksList = res.data
-	// 		setTasks(tasksList)
-	// 		console.log('tasks', tasks)
-
-	// 	})
-	// 	.catch(error => {
-	// 		console.error(error.message)
-	// 	})
-	// }
 
 	const getTasksForAdmin = () => {
 
@@ -81,11 +62,49 @@ const { token, role, tasksList } = appState;
 		setTextForm(textFormCopy)
 	}
 
+	const findDuplicate = () => {
+		let result = false;
+		let copyItems = [...items];
+		let copyText = text.replace(/\s/g, '');
+		copyItems.forEach((item) => {
+		  item.title = item.title.replace(/\s/g, '');
+		  if (item.title === copyText) {
+			result = true;
+			return false;
+		  }
+		});
+		return result;
+	  }
+	
+	  const warningLineTength = () => {
+			return setWarningText('Введите более 4-х символов')
+		}
+	
+		const warningError = () => {
+			return setWarningText('Ошибка!')
+		}
+
 	const handleTaskSubmit = e => {
 		e.preventDefault();
 		if (role === 'admin') {
 			createTaskByAdmin()
 		}
+
+		if (text.length === 0 || findDuplicate()) {
+			warningError();
+			return;
+		  } else if ((text.length < 4)  || (text.length === 0)) {
+				  warningLineTength()
+				  return
+			  } else {
+			const newItem = {
+			  title: text,
+			  id: Date.now(),
+			  cheked: false
+			};
+			setItems(items.concat(newItem));
+			setText('');
+		  }
 	}
 
 	const createTaskByAdmin = () => {
@@ -124,13 +143,6 @@ const { token, role, tasksList } = appState;
 		taskListCopy.splice(delId, 1);
 		dispatch(addTasksList(taskListCopy))
 	}
-
-	// const handleRemove = (id) => {
-	// 	let newItems = items.slice();
-	// 	const delId = newItems.findIndex((n) => n.id === id);
-	// 	newItems.splice(delId, 1);
-	// 	setItems(newItems);
-	//   }
   
   const renderTasks = (arr) => {
 			let result;
@@ -177,6 +189,10 @@ const { token, role, tasksList } = appState;
 						nameForm='text'
 						placeholder = 'Enter a new task'
 					/>}
+
+					<div className='warningText'>
+						{warningText}
+					</div>
 					
 					<div className = 'list'>
 							{tasksList && tasksList.length > 0 && renderTasks(tasksList)}
