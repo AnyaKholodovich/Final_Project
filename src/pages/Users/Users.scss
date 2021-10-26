@@ -6,7 +6,7 @@
     flex-wrap: wrap;
 
 	.container{
-
+		
 		.card{
             display: inline-flex;
             justify-content: space-between;
@@ -24,7 +24,7 @@
             font-size: 14px;
             min-width: 900px;
             width: 900px;
-            margin: 5px auto 5px;
+            margin: 10px auto 5px;
             padding: 10px;
             background-color: aliceblue;
             background-color:rgba(300, 300, 300, 0.9);
@@ -32,10 +32,17 @@
             box-shadow: 0 0 3px rgba(0,0,0,0.5);
             text-align:center;
 
+			
+
             .textTitle{
                 margin: -10px 30px -10px 60px;
             }
         }
+
+		.first{
+			margin: 70px 0 0 0;
+			align-items: center;
+		}
 
 		.search{
 			margin-right: 115px;
@@ -46,3 +53,4 @@
 		}
 	}
 }
+

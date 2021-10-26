@@ -1,46 +1,77 @@
+.li-task{
+	width: 600px;
+	padding:7px 7px 7px 20px;
+	margin: 10px 0 0 50px;
+	border: 1px solid #74C6D2; 
+	background-color: #ECF7F9;
+	border-radius: 6px;
+	box-shadow:
+		0 1px 0 rgba(255,255,255,0.2),
+		inset 0 1px 1px rgba(0,0,0,0.1);
+	-webkit-transition: all 0.3s ease-out;
+	-moz-transition: all 0.3s ease-out;
+	-ms-transition: all 0.3s ease-out;
+	-o-transition: all 0.3s ease-out;
+	transition: all 0.3s ease-out;
+	font-size: 12px;
+	display: inline-block;
+	text-align: start;
+	align-items: center;
+	
+	.li-tasks{
+	  color: #333;
+		display: flex;
+	  align-items: center;
+	  transition: 0.5s;
+	  justify-content: space-between;
+	}
+  }
+  .item-name{
+	text-align: start;
+	align-items: center;
+	margin-bottom: 15px;
+	top: 25px;
+  }
 
-  
-    .li-task{
-      width: 600px;
-      padding:7px 7px 7px 20px;
-      margin: 10px 0 0 50px;
-      border: 1px solid #74C6D2; 
-      background-color: #ECF7F9;
-      border-radius: 6px;
-      box-shadow:
-          0 1px 0 rgba(255,255,255,0.2),
-          inset 0 1px 1px rgba(0,0,0,0.1);
-      -webkit-transition: all 0.3s ease-out;
-      -moz-transition: all 0.3s ease-out;
-      -ms-transition: all 0.3s ease-out;
-      -o-transition: all 0.3s ease-out;
-      transition: all 0.3s ease-out;
-      font-size: 12px;
-      display: inline-block;
-      text-align: start;
-      
-      .li-tasks{
-        color: #333;
-	      display: flex;
-        align-items: center;
-        transition: 0.5s;
-      }
-    }
-    
-    .custom-checkbox{
-        margin-right: 10px;
-    }
+  .li-taskss{
+	display: flex;
+	text-align: start;
+	align-items: center;
+  }
+  .custom-checkbox{
+	  margin-right: 10px;
+  }
+.correct-input{
+	width: 90%;
+		padding:10px 6px 10px 10px;
+		border: 1px solid #74C6D2; 
+		background-color: #ffff;
+		border-radius: 6px;
+		box-shadow:
+			0 1px 0 rgba(255,255,255,0.2),
+			inset 0 1px 1px rgba(0,0,0,0.1);
+		-webkit-transition: all 0.3s ease-out;
+		-moz-transition: all 0.3s ease-out;
+		-ms-transition: all 0.3s ease-out;
+		-o-transition: all 0.3s ease-out;
+		transition: all 0.3s ease-out;
+		color: #333;
+		font-weight: 100;
+		font-size: 13px;
+}
+  .btn-correct{
+	  font-size: 12px;
+	  box-shadow: none;
+	  cursor: pointer;
+	  appearance: none;
+	  color: red;
+	  background-color: none;
+	  outline: none; 
+	  border: 0;
+	  background: transparent;
+	  align-items: flex-end;
+	}
 
-    .btn-deleted{
-        font-size: 12px;
-        box-shadow: none;
-        cursor: pointer;
-        appearance: none;
-        color: red;
-        background-color: none;
-        outline: none; 
-        border: 0;
-        background: transparent;
-        align-items: flex-end;
-      }
-  
+
+
+

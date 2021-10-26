@@ -1,12 +1,11 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export const authApi = {
-    signUpUser: async (body) => {
-        return  axios.post('http://localhost:3001/signUp' , body)
-    },
+	signUpUser: async (body) => {
+		return axios.post('http://localhost:3001/signUp', body)
+	},
 
-    signInUser: async (body) => {
-        return  axios.post('http://localhost:3001/signIn' , body)
-    }
-
+	signInUser: async (body) => {
+		return axios.post('http://localhost:3001/signIn', body)
+	}
 }

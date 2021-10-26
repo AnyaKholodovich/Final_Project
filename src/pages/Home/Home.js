@@ -2,22 +2,21 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { Routes, linkToRoute } from '../../utils/routes';
-import './Home.scss';
+import { linkToRoute, Routes } from '../../utils/routes';
 
-const Home = () =>{
-    const history = useHistory();
-    const {token, role } = useSelector(state => state.authReducer)
+const Home = () => {
+	const history = useHistory();
+	const { token, role } = useSelector(state => state.toDoAppReducer)
 
-    useEffect(() => {  
-        if (token) {
+	useEffect(() => {
+		if (token) {
 			linkToStartPage(role)
 		} else {
-            linkToRoute(history, Routes.SignInRoute)
+			history.push(Routes.SignInRoute)
 		}
-    }, []);
+	}, []);
 
-    const linkToStartPage = (role) => {
+	const linkToStartPage = (role) => {
 		if (role === 'admin') {
 			linkToRoute(history, Routes.UsersRoute)
 		} else {
@@ -25,9 +24,9 @@ const Home = () =>{
 		}
 	}
 
-    return (
-    <h1>Домашняя страница</h1>
-    );
-}
+	return <h1>
+		Home page
+	</h1>
+};
 
 export default Home;

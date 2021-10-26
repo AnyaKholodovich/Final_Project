@@ -1,22 +1,21 @@
 * {
-  text-decoration: none;
-  list-style: none;
-  box-sizing: border-box;
-}
-body {
-  background: #fff;
-  background-size: 120%;
-  background-image: url(/src/img/pexels-johannes-plenio-1103970.jpg);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-}
-
-
-.App {
-  text-align: center;
-  font-family: 'Karla', sans-serif;
-  text-align: center;
-}
-
-
+	text-decoration: none;
+	list-style: none;
+	box-sizing: border-box;
+  }
+  body {
+	background: #fff;
+	background-size: 120%;
+	background-image: url(/src/img/pexels-johannes-plenio-1103970.jpg);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+  }
+  
+  
+  .App {
+	text-align: center;
+	font-family: 'Karla', sans-serif;
+	text-align: center;
+  }
+  

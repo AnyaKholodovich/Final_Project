@@ -1,6 +1,6 @@
 .navigation-container{
     display: flex;
-    justify-content: center;
+    justify-content: end;
     height: 50px;
     align-items: center;
     background-color:rgba(300, 300, 300, 0.55);
@@ -23,6 +23,7 @@
         font-size: 14px;
         transition: opacity 1s liner;
         color:#212B27;
+        font-weight: 600;
     }
     :active{
         opacity: 1;

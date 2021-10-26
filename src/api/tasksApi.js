@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 export const tasksApi = {
+
 	getTasks: async (accsesstoken) => {
+
 		return axios.get('http://localhost:3001/tasks', {
 			headers: {
 				authorization: `Bearer ${accsesstoken}`
@@ -18,7 +20,6 @@ export const tasksApi = {
 	},
 
 	createTaskForUser: async (name, user_Id, accsesstoken) => {
-		console.log('createTaskForUser API', name, user_Id, accsesstoken)
 		return axios.post('http://localhost:3001/tasks',
 			{
 				name: name,
@@ -52,4 +53,6 @@ export const tasksApi = {
 		})
 	}
 }
+
+
 

@@ -1,6 +1,5 @@
-export {default as Home} from './Home/Home'
-export {default as SignIg} from './SignIg/SignIg'
-export {default as SignUp} from './SignUp/SignUp'
-export {default as Tasks} from './Tasks/Tasks'
-export {default as Users} from './Users/Users'
-export {default as AuthInput} from '../components/authForm/authInput/AuthInput'
+export { default as Home } from './Home/Home';
+export { default as SignIn } from './SignIn/SignIn';
+export { default as Registration } from './Registration/Registration';
+export { default as Tasks } from './Tasks/Tasks';
+export { default as Users } from './Users/Users';

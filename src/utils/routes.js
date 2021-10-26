@@ -1,11 +1,11 @@
 export const Routes = {
-    HomeRoute: '/',
-    SignInRoute: '/signIg',
-    SignUpRoute: '/signUp',
-    TasksRoute: '/tasks',
-    UsersRoute:'/users'
+	HomeRoute: '/',
+	SignInRoute: '/signIn',
+	SignUpRoute: '/signUp',
+	TasksRoute: '/tasks',
+	UsersRoute: '/users'
 }
 
 export const linkToRoute = (history, route) => {
-    history.push(route)
+	history.push(route)
 }

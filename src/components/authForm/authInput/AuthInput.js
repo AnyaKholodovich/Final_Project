@@ -1,50 +1,60 @@
 import React from 'react';
 
-import './AuthForm.scss';
+import './AuthInput.scss';
 
-const AuthInput = ( 
-    {inputTitle,
-    disabled,
-    inputError, 
-    matchValidationText,
-    inputErrorName, 
-    emptyValidationText, 
-    invalidValidationText, 
-    existsValidationText,  
-    inputValue, 
-    inputValueName,
-    inputType,
-    inputplaceholder, 
-    handleChangeForm, 
-    handleCheckValidForm}  ) => {
+const AuthInput = ({
+	inputType,
+	disabled,
+	inputPlaceholder,
+	inputError,
+	inputErrorName,
+	inputValue,
+	inputValueName,
+	inputName,
+	emptyValidationText,
+	invalidValidationText,
+	existsValidationText,
+	matchValidationText,
+	notExistsValidationText,
+	handleChangeForm,
+	handleCheckValidForm }) => {
 
-    return (
-        <div className = 'input-block'>
-            {/* <label 
-            for='logUp' 
-            className = 'title-sign'>
-                { inputTitle }
-            </label> */}
+	return (
+		<div className='input-block'>
+			<input type={inputType} placeholder={inputPlaceholder}
+				name={inputName} className='registration-input'
+				value={inputValue}
+				onChange={event => handleChangeForm(event, inputValueName, inputErrorName)}
+				onBlur={event => handleCheckValidForm(event, inputValueName, inputErrorName)}
+				disabled={disabled}
+			/>
 
-            <input 
-                type = { inputType }
-                placeholder= { inputplaceholder }
-                value = { inputValue }
-                name = { inputValueName }
-                onChange={ event => handleChangeForm(event, inputValueName, inputErrorName )}
-                onBlur={ event => handleCheckValidForm(event, inputValueName, inputErrorName)}
-                disabled = {disabled}
-            />
-            <div className='registration-error'>
-            {inputError === 'empty' && (<span>  { emptyValidationText } </span>)}
-            {inputError === 'notValid' && (<span> { invalidValidationText } </span>)}
-            {inputError === 'alreadyExist' &&  (<span> { existsValidationText } </span>)}
-            {inputError === 'notMatch' && (
-            <span className='registration-error'> { matchValidationText } </span>)}
-            </div>
-            
-        </div>
-    )
+			<div className='registration-error'>
+				{
+					inputError === 'empty' &&
+					<div className='login-error'>{emptyValidationText} </div>
+				}
+				{
+					inputError === 'notValid' &&
+					<div className='login-error'> {invalidValidationText} </div>
+				}
+				{
+					inputError === 'alreadyExist' &&
+					<div className='login-error'> {existsValidationText} </div>
+				}
+
+				{
+					inputError === 'notMatch' &&
+					<div className='psw-error'>{matchValidationText}</div>
+				}
+
+				{
+					inputError === 'notExists' &&
+					<div className='login-error'>{notExistsValidationText}</div>
+				}
+			</div>
+		</div>
+	)
 }
 
-export default AuthInput;
+export default AuthInput

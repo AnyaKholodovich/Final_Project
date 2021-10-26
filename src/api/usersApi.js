@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-
 export const usersApi = {
-	getUsers: async (accsesstoken) => {			
+	getUsers: async (accsesstoken) => {
+
 		return axios.get('http://localhost:3001/users', {
 			headers: {
 				authorization: `Bearer ${accsesstoken}`
